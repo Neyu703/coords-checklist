@@ -13,15 +13,25 @@ self.addEventListener("activate",e=>{
   );
 });
 
-// stale-while-revalidate: answer from cache, refresh it in the background
+// network first so a deploy shows up on the next open; cache is the offline/slow-network fallback
+const NETWORK_TIMEOUT_MS=4000;
+
+const fromNetwork=req=>Promise.race([
+  fetch(req,{cache:"no-cache"}),
+  new Promise((_,reject)=>setTimeout(()=>reject(new Error("timeout")),NETWORK_TIMEOUT_MS))
+]);
+
 self.addEventListener("fetch",e=>{
   const req=e.request;
   if(req.method!=="GET"||new URL(req.url).origin!==location.origin)return;
   e.respondWith((async()=>{
     const cache=await caches.open(CACHE);
-    const hit=await cache.match(req,{ignoreSearch:true});
-    const net=fetch(req).then(res=>{if(res.ok)cache.put(req,res.clone());return res}).catch(()=>null);
-    if(hit){e.waitUntil(net);return hit}
-    return (await net)||cache.match("index.html")||Response.error();
+    try{
+      const res=await fromNetwork(req);
+      if(res.ok)cache.put(req,res.clone());
+      return res;
+    }catch(err){
+      return (await cache.match(req,{ignoreSearch:true}))||(await cache.match("index.html"))||Response.error();
+    }
   })());
 });

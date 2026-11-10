@@ -140,5 +140,10 @@ $("imp").addEventListener("click",function(){
     flashLabel(this,"+"+(done.size-before)+" übernommen",2000);
   }catch(e){alert("Kein gültiges Backup.")}
 });
+let hiddenAt=0;
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden){hiddenAt=Date.now();return}
+  if(hiddenAt&&Date.now()-hiddenAt>30*60*1000)location.reload();
+});
 if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 render();
