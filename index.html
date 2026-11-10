@@ -2,36 +2,51 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161616" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Koordinaten">
+<meta name="format-detection" content="telephone=no">
 <title>Koordinaten-Checkliste</title>
 <style>
-:root{--bg:#fff;--fg:#1a1a1a;--mut:#6b6b6b;--line:#e4e4e4;--card:#f6f6f6;--acc:#0a7d4f;--accbg:#e3f4ec}
-@media(prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mut:#9a9a9a;--line:#2c2c2c;--card:#202020;--acc:#4cc38a;--accbg:#173326}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.4 system-ui,sans-serif}
-header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 12px;z-index:5}
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#6b6b6b;--line:#e4e4e4;--card:#f6f6f6;--acc:#0a7d4f;--accbg:#e3f4ec;--press:#ececec;--hdr:rgba(255,255,255,.82);color-scheme:light dark;
+--sl:max(14px,env(safe-area-inset-left));--sr:max(14px,env(safe-area-inset-right))}
+@media(prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mut:#9a9a9a;--line:#2c2c2c;--card:#202020;--acc:#4cc38a;--accbg:#173326;--press:#2a2a2a;--hdr:rgba(22,22,22,.82)}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.35 -apple-system,system-ui,sans-serif;overscroll-behavior-y:none}
+header{position:sticky;top:0;background:var(--hdr);-webkit-backdrop-filter:saturate(180%) blur(16px);backdrop-filter:saturate(180%) blur(16px);border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top)) var(--sr) 10px var(--sl);z-index:5}
 .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-h1{font-size:17px;margin:0}
-#count{color:var(--mut);font-variant-numeric:tabular-nums;font-size:13px}
-.bar{height:4px;background:var(--line);border-radius:2px;margin:8px 0;overflow:hidden}
+h1{font-size:20px;margin:0;letter-spacing:-.01em}
+#count{color:var(--mut);font-variant-numeric:tabular-nums;font-size:15px}
+.bar{height:5px;background:var(--line);border-radius:3px;margin:8px 0 10px;overflow:hidden}
 #fill{height:100%;background:var(--acc);width:0;transition:width .2s}
-.ctrl{display:flex;gap:6px}
-input[type=search]{flex:1;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg);font-size:15px}
-select{padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg);font-size:14px}
+.ctrl{display:flex;gap:8px}
+.ctrl+.ctrl{margin-top:8px}
+input[type=search],input[type=text],select{min-height:44px;min-width:0;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg);font:inherit;font-size:16px;-webkit-appearance:none;appearance:none}
+input[type=search],input[type=text],#fmt{flex:1}
+input[type=search]::-webkit-search-decoration{-webkit-appearance:none}
+select{padding-right:30px;text-overflow:ellipsis;background-image:linear-gradient(45deg,transparent 50%,var(--mut) 50%),linear-gradient(135deg,var(--mut) 50%,transparent 50%);background-position:calc(100% - 16px) 50%,calc(100% - 11px) 50%;background-size:5px 5px;background-repeat:no-repeat}
 ul{list-style:none;margin:0;padding:0}
-li{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);cursor:pointer}
+li{display:flex;align-items:center;gap:8px;min-height:64px;padding:8px var(--sr) 8px var(--sl);border-bottom:1px solid var(--line);cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;content-visibility:auto;contain-intrinsic-size:auto 64px}
+li:active{background:var(--press)}
 li.done{background:var(--accbg)}
 li.done .nm{text-decoration:line-through;color:var(--mut)}
 li.pc .nm::after{content:" ●";color:#e0483e}
-input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc);flex:none}
+input[type=checkbox]{width:26px;height:26px;margin:0;accent-color:var(--acc);flex:none;position:relative}
+input[type=checkbox]::before{content:"";position:absolute;inset:-12px -8px -12px -14px}
 .tx{flex:1;min-width:0}
-.nm{font-weight:500;overflow:hidden;text-overflow:ellipsis}
+.nm{font-weight:500;overflow-wrap:anywhere}
 .nm i{font-style:normal;color:var(--mut);font-weight:400;margin-right:6px;font-variant-numeric:tabular-nums}
-.co{color:var(--mut);font-size:13px;font-family:ui-monospace,monospace}
-a.go{flex:none;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;padding:8px 12px;font-size:13px;text-decoration:none;min-width:56px;text-align:center}
-button{flex:none;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;padding:8px 12px;font-size:13px;cursor:pointer;min-width:64px}
+.co{color:var(--mut);font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+a.go,button{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:56px;padding:0 10px;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:10px;font:inherit;font-size:15px;font-weight:500;text-decoration:none;cursor:pointer;touch-action:manipulation}
+a.go:active,button:active{background:var(--press)}
+a.go:not([href]){opacity:.4}
 button.ok{background:var(--acc);color:#fff;border-color:var(--acc)}
-.foot{padding:14px 12px;display:flex;gap:8px;justify-content:center}
+.foot{padding:16px var(--sr) calc(16px + env(safe-area-inset-bottom)) var(--sl);display:flex;gap:8px;justify-content:center}
 .empty{padding:30px;text-align:center;color:var(--mut)}
 </style>
 </head>
@@ -40,12 +55,12 @@ button.ok{background:var(--acc);color:#fff;border-color:var(--acc)}
 <div class="top"><h1>Koordinaten</h1><span id="count"></span></div>
 <div class="bar"><div id="fill"></div></div>
 <div class="ctrl">
-<input id="q" type="search" placeholder="Suchen (Name oder Nr.)" autocomplete="off">
+<input id="q" type="search" placeholder="Suchen (Name oder Nr.)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
 <select id="f"><option value="all">Alle</option><option value="open">Offen</option><option value="done">Erledigt</option></select>
 </div>
-<div class="ctrl" style="margin-top:6px">
+<div class="ctrl">
 <select id="fmt"><option value="pokemongo://?lat={lat}&amp;lng={lng}">iPoGo</option><option value="pokemongo://?spprotele={lat},{lng}">SpooferPro</option><option value="velocity://{lat},{lng}">Velocity</option><option value="https://ipogo.app/?coords={lat},{lng}">ipogo.app (Umweg, 2 Klicks)</option><option value="{lat}, {lng}">Nur Koordinaten</option><option value="custom">Eigenes Format</option></select>
-<input id="cust" type="text" placeholder="z.B. scheme://?c={lat},{lng}" style="display:none;flex:1;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg);font-size:14px">
+<input id="cust" type="text" placeholder="z.B. scheme://?c={lat},{lng}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" hidden>
 </div>
 </header>
 <ul id="list"></ul>
@@ -98,7 +113,7 @@ function url(lat,lng){
 }
 function links(){
   const c=$("fmt").value==="custom";
-  $("cust").style.display=c?"":"none";
+  $("cust").hidden=!c;
   list.querySelectorAll("a.go").forEach(a=>{
     const u=url(a.dataset.lat,a.dataset.lng);
     if(/^[a-z][a-z0-9+.-]*:\/\//i.test(u))a.href=u;else a.removeAttribute("href");
@@ -128,6 +143,7 @@ function render(){
   else if(shown&&e)e.remove();
 }
 $("q").addEventListener("input",render);
+$("q").addEventListener("keydown",e=>{if(e.key==="Enter")e.target.blur()});
 $("f").addEventListener("change",render);
 let armed=false;
 $("reset").addEventListener("click",function(){
