@@ -46,6 +46,8 @@ a.go,button{flex:none;display:inline-flex;align-items:center;justify-content:cen
 a.go:active,button:active{background:var(--press)}
 button.ok{background:var(--acc);color:#fff;border-color:var(--acc)}
 .foot{padding:16px var(--sr) calc(16px + env(safe-area-inset-bottom)) var(--sl);display:flex;gap:8px;justify-content:center}
+.gbar{padding:10px var(--sr) 10px var(--sl);border-bottom:1px solid var(--line)}
+#gall{width:100%}
 .empty{padding:30px;text-align:center;color:var(--mut)}
 </style>
 </head>
@@ -61,6 +63,7 @@ button.ok{background:var(--acc);color:#fff;border-color:var(--acc)}
 <select id="f" aria-label="Status"><option value="all">Alle</option><option value="open">Offen</option><option value="done">Erledigt</option></select>
 </div>
 </header>
+<div id="gbar" class="gbar" hidden><button id="gall"></button></div>
 <ul id="list"></ul>
 <div class="foot"><button id="reset">Alles zurücksetzen</button></div>
 <script>
@@ -121,6 +124,11 @@ ogRally.label="Stamp Rallies";ogPref.label="Poké Lids nach Präfektur";
 groups.forEach((G,k)=>{const o=document.createElement("option");o.value=k;opts.set(k,o);(k.startsWith("rally:")?ogRally:ogPref).appendChild(o)});
 $("g").append(ogRally,ogPref);
 try{const s=localStorage.getItem(GK);if(s&&groups.has(s))$("g").value=s}catch(e){}
+let gArmed=false;
+function setMany(ns,v){
+  ns.forEach(n=>v?done.add(n):done.delete(n));
+  save();render();
+}
 function set(n,v){
   v?done.add(n):done.delete(n);
   save();render();
@@ -139,6 +147,11 @@ function render(){
   const doneIn=ns=>ns.filter(n=>done.has(n)).length;
   groups.forEach((G,k)=>{opts.get(k).textContent=G.label+" ("+doneIn(G.ns)+"/"+G.ns.length+")"});
   const total=g?groups.get(g).ns.length:DATA.length,cnt=g?doneIn(groups.get(g).ns):done.size;
+  $("gbar").hidden=!g;
+  if(g){
+    const left=total-cnt;
+    $("gall").textContent=left?"Alle abhaken ("+left+" offen)":gArmed?"Sicher? Nochmal tippen":"Rally zurücksetzen";
+  }
   $("count").textContent=cnt+" / "+total;
   $("fill").style.width=(cnt/total*100)+"%";
   let e=document.getElementById("empty");
@@ -148,7 +161,13 @@ function render(){
 $("q").addEventListener("input",render);
 $("q").addEventListener("keydown",e=>{if(e.key==="Enter")e.target.blur()});
 $("f").addEventListener("change",render);
-$("g").addEventListener("change",()=>{try{localStorage.setItem(GK,$("g").value)}catch(e){}render();scrollTo(0,0)});
+$("gall").addEventListener("click",()=>{
+  const ns=groups.get($("g").value).ns,all=ns.every(n=>done.has(n));
+  if(!all)return setMany(ns,true);
+  if(!gArmed){gArmed=true;render();setTimeout(()=>{gArmed=false;render()},2500);return}
+  gArmed=false;setMany(ns,false);
+});
+$("g").addEventListener("change",()=>{gArmed=false;try{localStorage.setItem(GK,$("g").value)}catch(e){}render();scrollTo(0,0)});
 let armed=false;
 $("reset").addEventListener("click",function(){
   if(!armed){armed=true;this.textContent="Sicher? Nochmal tippen";setTimeout(()=>{armed=false;this.textContent="Alles zurücksetzen"},2500);return}
