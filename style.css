@@ -31,7 +31,13 @@ input[type=checkbox]::before{content:"";position:absolute;inset:-12px -8px -12px
 a.go,button{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:56px;padding:0 10px;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:10px;font:inherit;font-size:15px;font-weight:500;text-decoration:none;cursor:pointer;touch-action:manipulation}
 a.go:active,button:active{background:var(--press)}
 button.ok{background:var(--acc);color:#fff;border-color:var(--acc)}
-.foot{padding:16px var(--sr) calc(16px + env(safe-area-inset-bottom)) var(--sl);display:flex;gap:8px;justify-content:center}
+.foot{padding:16px var(--sr) calc(88px + env(safe-area-inset-bottom)) var(--sl);display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+[hidden]{display:none!important}
 .gbar{padding:10px var(--sr) 10px var(--sl);border-bottom:1px solid var(--line)}
 #gall{width:100%}
+.fab{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:6;min-height:48px;padding:0 18px;border-radius:24px;background:var(--acc);border-color:var(--acc);color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.fab:active{background:var(--acc);filter:brightness(.9)}
+li{scroll-margin-top:calc(var(--hh,120px) + 4px)}
+li.flash{animation:flash 1s ease-out}
+@keyframes flash{from{background:var(--press);outline:2px solid var(--acc);outline-offset:-2px}to{outline:2px solid transparent}}
 .empty{padding:30px;text-align:center;color:var(--mut)}

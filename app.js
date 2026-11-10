@@ -1,12 +1,13 @@
-let DATA;
-try{DATA=await fetch("data.json").then(r=>{if(!r.ok)throw new Error(r.status);return r.json()})}
+let DB;
+try{DB=await fetch("data.json").then(r=>{if(!r.ok)throw new Error(r.status);return r.json()})}
 catch(e){
   document.getElementById("list").innerHTML='<div class="empty">Daten konnten nicht geladen werden. Seite über http(s) öffnen, nicht als Datei.</div>';
   throw e;
 }
+const DATA=DB.spots,ids=new Set(DATA.map(e=>e[0]));
 const KEY="coords-checked-v1";
 let done=new Set();
-try{done=new Set(JSON.parse(localStorage.getItem(KEY)||"[]"))}catch(e){}
+try{done=new Set(JSON.parse(localStorage.getItem(KEY)||"[]").filter(n=>ids.has(n)))}catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify([...done]))}catch(e){}};
 const $=id=>document.getElementById(id);
 const list=$("list");
@@ -22,15 +23,11 @@ async function copy(text){
 }
 
 const groupOf=name=>{const i=name.indexOf(" - ");return i<0?name:name.slice(0,i)};
-const RALLIES=[["lid","Poké-Lid-Rally"],["center","Pokémon-Center-Rally"],["sendai","Sendai Lapras-Rally"],["minato","Tokyo Minato-Rally"],["koto","Tokyo Koto-Rally"],["shinagawa","Tokyo Shinagawa-Rally"],["suita","Suita-Rally (Osaka)"],["nagasaki","Nagasaki-City-Rally"],["apac","PokéXciting! APAC-Rally"]].map(([k,l])=>["rally:"+k,l]);
-const RALLY_OF={"Pokémon Center":"center","Lapras Sendai":"sendai","Tokyo Minato":"minato","Tokyo Koto":"koto","Shinagawa":"shinagawa","Suita":"suita","Nagasaki City":"nagasaki","PokéXciting":"apac"};
-const rallyOf=name=>RALLY_OF[groupOf(name)]||"lid";
-const groups=new Map(RALLIES.map(([k,label])=>[k,{label,ns:[]}]));
+const groups=new Map(DB.rallies.map(([k,label])=>["rally:"+k,{label,ns:[]}]));
 const addTo=(key,label,n)=>{if(!groups.has(key))groups.set(key,{label,ns:[]});groups.get(key).ns.push(n)};
 
-DATA.forEach(([n,name,lat,lng])=>{
+DATA.forEach(([n,name,lat,lng,r])=>{
   const li=document.createElement("li");
-  const r=rallyOf(name);
   li.keys=["rally:"+r];
   if(r==="lid")li.keys.push("pref:"+groupOf(name));
   li.keys.forEach(k=>addTo(k,k.slice(5),n));
@@ -53,6 +50,14 @@ DATA.forEach(([n,name,lat,lng])=>{
   list.appendChild(li);
 });
 
+const header=document.querySelector("header");
+const setHeaderHeight=()=>document.documentElement.style.setProperty("--hh",header.offsetHeight+"px");
+setHeaderHeight();addEventListener("resize",setHeaderHeight);
+function flashLabel(btn,text,ms=1400){
+  const old=btn.dataset.label||btn.textContent;
+  btn.dataset.label=old;btn.textContent=text;
+  setTimeout(()=>{btn.textContent=old;delete btn.dataset.label},ms);
+}
 const GK="coords-group-v2";
 const opts=new Map();
 const ogRally=document.createElement("optgroup"),ogPref=document.createElement("optgroup");
@@ -103,10 +108,37 @@ $("gall").addEventListener("click",()=>{
   if(!gArmed){gArmed=true;render();setTimeout(()=>{gArmed=false;render()},2500);return}
   gArmed=false;setMany(ns,false);
 });
+$("nxt").addEventListener("click",function(){
+  const open=[...list.querySelectorAll("li")].filter(li=>li.style.display!=="none"&&!li.classList.contains("done"));
+  if(!open.length)return flashLabel(this,"Nichts offen");
+  const edge=header.getBoundingClientRect().bottom+10;
+  const next=open.find(li=>li.getBoundingClientRect().top>edge)||open[0];
+  next.scrollIntoView({block:"start"});
+  next.classList.remove("flash");void next.offsetWidth;next.classList.add("flash");
+  next.addEventListener("animationend",()=>next.classList.remove("flash"),{once:true});
+});
 $("g").addEventListener("change",()=>{gArmed=false;try{localStorage.setItem(GK,$("g").value)}catch(e){}render();scrollTo(0,0)});
 let armed=false;
 $("reset").addEventListener("click",function(){
   if(!armed){armed=true;this.textContent="Sicher? Nochmal tippen";setTimeout(()=>{armed=false;this.textContent="Alles zurücksetzen"},2500);return}
   done.clear();save();render();armed=false;this.textContent="Alles zurücksetzen";
 });
+$("exp").addEventListener("click",async function(){
+  const txt=JSON.stringify({v:1,done:[...done].sort((a,b)=>a-b)});
+  if(await copy(txt))flashLabel(this,"Kopiert ✓");
+  else prompt("Backup kopieren:",txt);
+});
+$("imp").addEventListener("click",function(){
+  const txt=prompt("Backup einfügen (wird mit dem aktuellen Stand zusammengeführt):");
+  if(!txt)return;
+  try{
+    const o=JSON.parse(txt);
+    if(!Array.isArray(o.done))throw new Error("format");
+    const before=done.size;
+    o.done.filter(n=>ids.has(n)).forEach(n=>done.add(n));
+    save();render();
+    flashLabel(this,"+"+(done.size-before)+" übernommen",2000);
+  }catch(e){alert("Kein gültiges Backup.")}
+});
+if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 render();

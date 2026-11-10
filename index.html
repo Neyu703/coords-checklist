@@ -10,6 +10,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Koordinaten">
 <meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
 <title>Koordinaten-Checkliste</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -27,7 +29,8 @@
 </header>
 <div id="gbar" class="gbar" hidden><button id="gall"></button></div>
 <ul id="list"></ul>
-<div class="foot"><button id="reset">Alles zurücksetzen</button></div>
+<div class="foot"><button id="exp">Backup kopieren</button><button id="imp">Backup einspielen</button><button id="reset">Alles zurücksetzen</button></div>
+<button id="nxt" class="fab">Nächster offener ↓</button>
 <script type="module" src="app.js"></script>
 </body>
 </html>
