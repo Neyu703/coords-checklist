@@ -26,7 +26,8 @@ h1{font-size:20px;margin:0;letter-spacing:-.01em}
 #fill{height:100%;background:var(--acc);width:0;transition:width .2s}
 .ctrl{display:flex;gap:8px}
 input[type=search],select{min-height:44px;min-width:0;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg);font:inherit;font-size:16px;-webkit-appearance:none;appearance:none}
-input[type=search]{flex:1}
+input[type=search],#g{flex:1}
+.ctrl+.ctrl{margin-top:8px}
 input[type=search]::-webkit-search-decoration{-webkit-appearance:none}
 select{padding-right:30px;text-overflow:ellipsis;background-image:linear-gradient(45deg,transparent 50%,var(--mut) 50%),linear-gradient(135deg,var(--mut) 50%,transparent 50%);background-position:calc(100% - 16px) 50%,calc(100% - 11px) 50%;background-size:5px 5px;background-repeat:no-repeat}
 ul{list-style:none;margin:0;padding:0}
@@ -54,7 +55,10 @@ button.ok{background:var(--acc);color:#fff;border-color:var(--acc)}
 <div class="bar"><div id="fill"></div></div>
 <div class="ctrl">
 <input id="q" type="search" placeholder="Suchen (Name oder Nr.)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
-<select id="f"><option value="all">Alle</option><option value="open">Offen</option><option value="done">Erledigt</option></select>
+</div>
+<div class="ctrl">
+<select id="g" aria-label="Rally"><option value="">Alle Rallies</option></select>
+<select id="f" aria-label="Status"><option value="all">Alle</option><option value="open">Offen</option><option value="done">Erledigt</option></select>
 </div>
 </header>
 <ul id="list"></ul>
@@ -77,8 +81,15 @@ async function copy(text){
   }catch(e){return false}
 }
 
+const groupOf=name=>{const i=name.indexOf(" - ");return i<0?name:name.slice(0,i)};
+const groups=new Map();
+
 DATA.forEach(([n,name,lat,lng])=>{
   const li=document.createElement("li");
+  const g=groupOf(name);
+  if(!groups.has(g))groups.set(g,[]);
+  groups.get(g).push(n);
+  li.dataset.g=g;
   li.dataset.n=n;
   li.dataset.s=(pad(n)+" "+name).toLowerCase();
   if(name.startsWith("Pokémon Center"))li.className="pc";
@@ -98,23 +109,30 @@ DATA.forEach(([n,name,lat,lng])=>{
   list.appendChild(li);
 });
 
+const GK="coords-group-v1";
+const opts=new Map();
+groups.forEach((ns,g)=>{const o=document.createElement("option");o.value=g;opts.set(g,o);$("g").appendChild(o)});
+try{const s=localStorage.getItem(GK);if(s&&groups.has(s))$("g").value=s}catch(e){}
 function set(n,v){
   v?done.add(n):done.delete(n);
   save();render();
 }
 function render(){
-  const q=$("q").value.trim().toLowerCase(),f=$("f").value;
+  const q=$("q").value.trim().toLowerCase(),f=$("f").value,g=$("g").value;
   let shown=0;
   list.querySelectorAll("li").forEach(li=>{
     const n=+li.dataset.n,d=done.has(n);
     li.classList.toggle("done",d);
     li.querySelector("input").checked=d;
-    const vis=(!q||li.dataset.s.includes(q))&&(f==="all"||(f==="done")===d);
+    const vis=(!g||li.dataset.g===g)&&(!q||li.dataset.s.includes(q))&&(f==="all"||(f==="done")===d);
     li.style.display=vis?"":"none";
     if(vis)shown++;
   });
-  $("count").textContent=done.size+" / "+DATA.length;
-  $("fill").style.width=(done.size/DATA.length*100)+"%";
+  const doneIn=ns=>ns.filter(n=>done.has(n)).length;
+  groups.forEach((ns,k)=>{opts.get(k).textContent=k+" ("+doneIn(ns)+"/"+ns.length+")"});
+  const total=g?groups.get(g).length:DATA.length,cnt=g?doneIn(groups.get(g)):done.size;
+  $("count").textContent=cnt+" / "+total;
+  $("fill").style.width=(cnt/total*100)+"%";
   let e=document.getElementById("empty");
   if(!shown&&!e){e=document.createElement("div");e.id="empty";e.className="empty";e.textContent="Nix gefunden.";list.after(e)}
   else if(shown&&e)e.remove();
@@ -122,6 +140,7 @@ function render(){
 $("q").addEventListener("input",render);
 $("q").addEventListener("keydown",e=>{if(e.key==="Enter")e.target.blur()});
 $("f").addEventListener("change",render);
+$("g").addEventListener("change",()=>{try{localStorage.setItem(GK,$("g").value)}catch(e){}render();scrollTo(0,0)});
 let armed=false;
 $("reset").addEventListener("click",function(){
   if(!armed){armed=true;this.textContent="Sicher? Nochmal tippen";setTimeout(()=>{armed=false;this.textContent="Alles zurücksetzen"},2500);return}
