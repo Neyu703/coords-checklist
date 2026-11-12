@@ -1,5 +1,5 @@
-const CACHE="coords-v1";
-const SHELL=["./","index.html","style.css","app.js","data.json","manifest.webmanifest","icons/icon-180.png","icons/icon-192.png","icons/icon-512.png"];
+const CACHE="coords-v2";
+const SHELL=["./","index.html","vendor/base-css/base.css","style.css","app.js","data.json","manifest.webmanifest","icons/icon-180.png","icons/icon-192.png","icons/icon-512.png"];
 
 self.addEventListener("install",e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()));
