@@ -1,0 +1,10 @@
+{
+  "name": "coords-checklist",
+  "private": true,
+  "scripts": {
+    "sync:base-css": "node scripts/sync-base-css.mjs"
+  },
+  "devDependencies": {
+    "@neyu703/base-css": "github:Neyu703/base-css#v1.0.0"
+  }
+}

@@ -1,0 +1,23 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    devDependencies:
+      '@neyu703/base-css':
+        specifier: github:Neyu703/base-css#v1.0.0
+        version: https://codeload.github.com/Neyu703/base-css/tar.gz/c212e289ac4f4bef925731988d240cf07c4f3af7
+
+packages:
+
+  '@neyu703/base-css@https://codeload.github.com/Neyu703/base-css/tar.gz/c212e289ac4f4bef925731988d240cf07c4f3af7':
+    resolution: {gitHosted: true, integrity: sha512-tBDOIdohHvj39VqT/XvIt9ZkJpBF49sB5KRLams28risAnNxKX95xEwZTUcp6/d+H7qZhSfAHlt1gn865u9zug==, tarball: https://codeload.github.com/Neyu703/base-css/tar.gz/c212e289ac4f4bef925731988d240cf07c4f3af7}
+    version: 1.0.0
+
+snapshots:
+
+  '@neyu703/base-css@https://codeload.github.com/Neyu703/base-css/tar.gz/c212e289ac4f4bef925731988d240cf07c4f3af7': {}
