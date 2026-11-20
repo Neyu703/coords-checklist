@@ -1,18 +1,5 @@
-﻿/*
- * base-css — responsive base layer for phone, tablet and desktop.
- * Plain CSS, no build step. Load it before the app's own styles.
- *
- * Window-size classes instead of device widths (a device is covered by its class, not its model):
- *   compact   < 600px     phones (iPhone 14 Plus 428px, Galaxy A56)
- *   medium    600–839px   tablets in portrait (Galaxy Tab S10 FE / FE+)
- *   expanded  840–1199px  tablets in landscape, small windows
- *   large     ≥ 1200px    desktop
- */
-
 :root {
   color-scheme: light dark;
-
-  /* Colors (Apple system palette) */
   --bg-grouped: #f2f2f7;
   --bg-card: #ffffff;
   --bg-bar: rgba(249, 249, 249, 0.86);
@@ -26,23 +13,15 @@
   --green: #34c759;
   --orange: #ff9500;
   --red: #ff3b30;
-
-  /* Shape and touch */
   --radius-card: 12px;
   --radius-control: 9px;
   --tap-target: 44px;
-
-  /* Safe areas (notch, rounded corners, Android gesture bar) */
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
-
-  /* Layout: values for the compact class, widened below */
   --gutter: 16px;
   --content-width: 100%;
-
-  /* Type scale (iOS text styles) */
   --text-title-large: 700 34px/41px var(--font-family);
   --text-title: 700 22px/28px var(--font-family);
   --text-headline: 600 17px/22px var(--font-family);
@@ -69,34 +48,28 @@
     --red: #ff453a;
   }
 }
-
 @media (min-width: 600px) {
   :root {
     --gutter: 24px;
     --content-width: 640px;
   }
 }
-
 @media (min-width: 840px) {
   :root {
     --gutter: 32px;
     --content-width: 760px;
   }
 }
-
 @media (min-width: 1200px) {
   :root {
     --content-width: 880px;
   }
 }
-
-/* Mouse and trackpad: denser controls */
 @media (hover: hover) and (pointer: fine) {
   :root {
     --tap-target: 36px;
   }
 }
-
 *,
 *::before,
 *::after {
@@ -145,7 +118,6 @@ button {
   display: none !important;
 }
 
-/* Centered column that keeps content clear of notches and rounded corners */
 .container {
   width: 100%;
   max-width: var(--content-width);
