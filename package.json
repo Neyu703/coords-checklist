@@ -2,9 +2,9 @@
   "name": "coords-checklist",
   "private": true,
   "scripts": {
-    "sync:base-css": "node scripts/sync-base-css.mjs"
+    "sync:react-lib": "node scripts/sync-react-lib.mjs"
   },
   "devDependencies": {
-    "@neyu703/base-css": "github:Neyu703/base-css#v1.0.0"
+    "@neyu703/react-lib": "github:Neyu703/React-Lib#v0.2.0"
   }
 }
