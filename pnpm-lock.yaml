@@ -8,26 +8,16 @@ importers:
 
   .:
     devDependencies:
-      '@neyu703/react-lib':
-        specifier: github:Neyu703/React-Lib#v0.2.0
-        version: https://codeload.github.com/Neyu703/React-Lib/tar.gz/828ffe5f94b960be42c4331d00e92fb85e165eff(react@19.3.1)
+      '@neyu703/base-css':
+        specifier: github:Neyu703/base-css#v1.0.0
+        version: https://codeload.github.com/Neyu703/base-css/tar.gz/c212e289ac4f4bef925731988d240cf07c4f3af7
 
 packages:
 
-  '@neyu703/react-lib@https://codeload.github.com/Neyu703/React-Lib/tar.gz/828ffe5f94b960be42c4331d00e92fb85e165eff':
-    resolution: {gitHosted: true, integrity: sha512-1PrNEdi6mPK81i+X01UZS2uLFW4ygTOI9XMWcupn1QiQQH+y1Il2vLfz5WSecp7W0jJLe8RhBZvqWWLLqO18Ww==, tarball: https://codeload.github.com/Neyu703/React-Lib/tar.gz/828ffe5f94b960be42c4331d00e92fb85e165eff}
-    version: 0.2.0
-    peerDependencies:
-      react: ^19.0.0
-
-  react@19.3.1:
-    resolution: {integrity: sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw==}
-    engines: {node: '>=0.10.0'}
+  '@neyu703/base-css@https://codeload.github.com/Neyu703/base-css/tar.gz/c212e289ac4f4bef925731988d240cf07c4f3af7':
+    resolution: {gitHosted: true, integrity: sha512-tBDOIdohHvj39VqT/XvIt9ZkJpBF49sB5KRLams28risAnNxKX95xEwZTUcp6/d+H7qZhSfAHlt1gn865u9zug==, tarball: https://codeload.github.com/Neyu703/base-css/tar.gz/c212e289ac4f4bef925731988d240cf07c4f3af7}
+    version: 1.0.0
 
 snapshots:
 
-  '@neyu703/react-lib@https://codeload.github.com/Neyu703/React-Lib/tar.gz/828ffe5f94b960be42c4331d00e92fb85e165eff(react@19.3.1)':
-    dependencies:
-      react: 19.3.1
-
-  react@19.3.1: {}
+  '@neyu703/base-css@https://codeload.github.com/Neyu703/base-css/tar.gz/c212e289ac4f4bef925731988d240cf07c4f3af7': {}
