@@ -8,16 +8,128 @@ importers:
 
   .:
     devDependencies:
-      '@neyu703/base-css':
-        specifier: github:Neyu703/base-css#v1.0.0
-        version: https://codeload.github.com/Neyu703/base-css/tar.gz/c212e289ac4f4bef925731988d240cf07c4f3af7
+      '@neyu703/react-lib':
+        specifier: github:Neyu703/React-Lib#v0.5.0
+        version: https://codeload.github.com/Neyu703/React-Lib/tar.gz/93f5bbd2f65155c3c98a821d5bee4804de9e9451(@reduxjs/toolkit@2.15.0(react-redux@9.3.1(react@19.3.1)(redux@5.0.1))(react@19.3.1))(react-redux@9.3.1(react@19.3.1)(redux@5.0.1))(react@19.3.1)
 
 packages:
 
-  '@neyu703/base-css@https://codeload.github.com/Neyu703/base-css/tar.gz/c212e289ac4f4bef925731988d240cf07c4f3af7':
-    resolution: {gitHosted: true, integrity: sha512-tBDOIdohHvj39VqT/XvIt9ZkJpBF49sB5KRLams28risAnNxKX95xEwZTUcp6/d+H7qZhSfAHlt1gn865u9zug==, tarball: https://codeload.github.com/Neyu703/base-css/tar.gz/c212e289ac4f4bef925731988d240cf07c4f3af7}
-    version: 1.0.0
+  '@neyu703/react-lib@https://codeload.github.com/Neyu703/React-Lib/tar.gz/93f5bbd2f65155c3c98a821d5bee4804de9e9451':
+    resolution: {gitHosted: true, integrity: sha512-BDcpQqKJCEg3dNOETBuEs00kSyG7yT0fUEUnMZPQSnmLew03lVBrcshI47vnFasTObUMbEJaRG6mkLRxjefGdg==, tarball: https://codeload.github.com/Neyu703/React-Lib/tar.gz/93f5bbd2f65155c3c98a821d5bee4804de9e9451}
+    version: 0.5.0
+    peerDependencies:
+      '@reduxjs/toolkit': ^2.0.0
+      '@testing-library/react': ^16.0.0
+      react: ^19.0.0
+      react-redux: ^9.0.0
+    peerDependenciesMeta:
+      '@testing-library/react':
+        optional: true
+
+  '@reduxjs/toolkit@2.15.0':
+    resolution: {integrity: sha512-tHrFdR/AAbhhnL0/D3Abu60mAeyRqMAaq3pMeIKWRFWpzZek9LbGKk9J2U+Cl43FixzEDaYKk3zUoK7sFl98FA==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.9.0 || ^17.0.0 || ^18 || ^19
+      react-redux: ^7.2.1 || ^8.1.3 || ^9.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+      react-redux:
+        optional: true
+
+  '@standard-schema/spec@1.1.0':
+    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
+
+  '@standard-schema/utils@0.3.0':
+    resolution: {integrity: sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==}
+
+  '@types/use-sync-external-store@0.0.6':
+    resolution: {integrity: sha512-zFDAD+tlpf2r4asuHEj0XH6pY6i0g5NeAHPn+15wk3BV6JA69eERFXC1gyGThDkVa1zCyKr5jox1+2LbV/AMLg==}
+
+  immer@11.2.10:
+    resolution: {integrity: sha512-pzANBj+0A9u+prdhBJ14DVi44vCvVUQzBa8DKt6I0AMCokPHtt722BK9IX5bFC70xUSU9TnzLRIJLTGqIzjEFw==}
+
+  react-redux@9.3.1:
+    resolution: {integrity: sha512-vxMLT0lalUjbZPkoTepWyKAZbjIIFssNx/CEL9lTfwQBU6XpkGSmCNdcCIrkOBUgB68uftZMnbXVb6DwGnhRKQ==}
+    peerDependencies:
+      '@types/react': ^18.2.25 || ^19
+      react: ^18.0 || ^19
+      redux: ^5.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      redux:
+        optional: true
+
+  react@19.3.1:
+    resolution: {integrity: sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw==}
+    engines: {node: '>=0.10.0'}
+
+  redux-thunk@3.1.0:
+    resolution: {integrity: sha512-NW2r5T6ksUKXCabzhL9z+h206HQw/NJkcLm1GPImRQ8IzfXwRGqjVhKJGauHirT0DAuyy6hjdnMZaRoAcy0Klw==}
+    peerDependencies:
+      redux: ^5.0.0
+
+  redux@5.0.1:
+    resolution: {integrity: sha512-M9/ELqF6fy8FwmkpnF0S3YKOqMyoWJ4+CS5Efg2ct3oY9daQvd/Pc71FpGZsVsbl3Cpb+IIcjBDUnnyBdQbq4w==}
+
+  reselect@5.3.0:
+    resolution: {integrity: sha512-XGoLeRAVzUTcJ1qkxPQhDJyIZ5d6zzZD9nT7AEZOaaU9UbWclhycElmhO+VD5bFeLuzhPBaOV2oXC8uG35ZSpg==}
+
+  use-sync-external-store@1.7.0:
+    resolution: {integrity: sha512-6L+EeigHMQhdaIPNIFUKwfWJSwWFQ8gJbJ2DLOs5sDIegTwR9fRxvnM3uciHKjIZhFz+KAv2emhWMRvDmMcY8A==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
 snapshots:
 
-  '@neyu703/base-css@https://codeload.github.com/Neyu703/base-css/tar.gz/c212e289ac4f4bef925731988d240cf07c4f3af7': {}
+  '@neyu703/react-lib@https://codeload.github.com/Neyu703/React-Lib/tar.gz/93f5bbd2f65155c3c98a821d5bee4804de9e9451(@reduxjs/toolkit@2.15.0(react-redux@9.3.1(react@19.3.1)(redux@5.0.1))(react@19.3.1))(react-redux@9.3.1(react@19.3.1)(redux@5.0.1))(react@19.3.1)':
+    dependencies:
+      '@reduxjs/toolkit': 2.15.0(react-redux@9.3.1(react@19.3.1)(redux@5.0.1))(react@19.3.1)
+      react: 19.3.1
+      react-redux: 9.3.1(react@19.3.1)(redux@5.0.1)
+
+  '@reduxjs/toolkit@2.15.0(react-redux@9.3.1(react@19.3.1)(redux@5.0.1))(react@19.3.1)':
+    dependencies:
+      '@standard-schema/spec': 1.1.0
+      '@standard-schema/utils': 0.3.0
+      immer: 11.2.10
+      redux: 5.0.1
+      redux-thunk: 3.1.0(redux@5.0.1)
+      reselect: 5.3.0
+    optionalDependencies:
+      react: 19.3.1
+      react-redux: 9.3.1(react@19.3.1)(redux@5.0.1)
+
+  '@standard-schema/spec@1.1.0': {}
+
+  '@standard-schema/utils@0.3.0': {}
+
+  '@types/use-sync-external-store@0.0.6': {}
+
+  immer@11.2.10: {}
+
+  react-redux@9.3.1(react@19.3.1)(redux@5.0.1):
+    dependencies:
+      '@types/use-sync-external-store': 0.0.6
+      react: 19.3.1
+      use-sync-external-store: 1.7.0(react@19.3.1)
+    optionalDependencies:
+      redux: 5.0.1
+
+  react@19.3.1: {}
+
+  redux-thunk@3.1.0(redux@5.0.1):
+    dependencies:
+      redux: 5.0.1
+
+  redux@5.0.1: {}
+
+  reselect@5.3.0: {}
+
+  use-sync-external-store@1.7.0(react@19.3.1):
+    dependencies:
+      react: 19.3.1
