@@ -106,7 +106,7 @@ textarea {
   touch-action: manipulation;
 }
 
-button {
+:where(button) {
   background: none;
   border: 0;
   padding: 0;
